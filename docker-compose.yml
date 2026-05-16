@@ -1,0 +1,83 @@
+# docker-compose.yml
+# This file defines all the "services" (containers) that run together.
+# One command starts ALL of them: docker compose up
+
+version: '3.8'
+
+services:
+
+  # ── Service 1: Your Flask app ──────────────────────────────────
+  app:
+    # build: . means "build the image using the Dockerfile in this folder"
+    build: .
+
+    # ports: maps container port → your laptop port
+    # "5000:5000" = container's port 5000 is accessible at localhost:5000
+    # Format is always "YOUR_LAPTOP:CONTAINER"
+    ports:
+      - "5000:5000"
+
+    # environment variables passed into the container
+    # Your app can read these with os.environ.get('FLASK_ENV')
+    environment:
+      - FLASK_ENV=development
+
+    # This service won't start until 'db' is ready
+    depends_on:
+      - db
+
+    # If the app crashes, restart it automatically
+    restart: unless-stopped
+
+
+  # ── Service 2: PostgreSQL database ─────────────────────────────
+  db:
+    # Use an official Postgres image (no need to build this one)
+    image: postgres:15
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_USER: sreuser
+      POSTGRES_PASSWORD: srepassword
+      POSTGRES_DB: sredb
+
+    # volumes: persist data even when container stops/restarts
+    # Without this, all DB data disappears when you run 'docker compose down'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+
+  # ── Service 3: Prometheus (monitoring) ─────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+
+    ports:
+      - "9090:9090"
+
+    # Mount our config file into the container
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+    restart: unless-stopped
+
+
+  # ── Service 4: Grafana (dashboards) ────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+    restart: unless-stopped
+
+
+# Named volumes — Docker manages these on your machine
+volumes:
+  postgres_data:

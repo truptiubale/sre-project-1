@@ -1,0 +1,15 @@
+# prometheus.yml
+# Tells Prometheus WHERE to collect metrics from
+
+global:
+  # How often Prometheus checks each target (every 15 seconds)
+  scrape_interval: 15s
+
+scrape_configs:
+  # Job name is just a label — shows up in Grafana
+  - job_name: 'sre-project-1'
+
+    static_configs:
+      # 'app' is the service name from docker-compose.yml
+      # Docker networking lets services find each other by name
+      - targets: ['app:5000']

@@ -1,0 +1,27 @@
+# .dockerignore
+# These files/folders are NOT copied into the Docker image.
+# Like .gitignore but for Docker.
+
+# Python cache files — not needed in container
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment — container installs its own
+venv/
+.venv/
+env/
+
+# Git files — not needed in container
+.git/
+.gitignore
+
+# Docs — not needed to run the app
+README.md
+
+# Test files — optional: remove if you want to run tests inside container
+tests/
+
+# Environment files (NEVER include secrets in an image!)
+.env
