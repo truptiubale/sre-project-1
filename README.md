@@ -23,6 +23,19 @@ sre-project-1/
 └── tests/
     └── test_app.py      # Automated tests
 ```
+----- Work-Flow ----
+
+Your mobile app
+      ↓
+   calls API
+      ↓
+Flask app (running in Docker)
+      ↓
+saves data to PostgreSQL (also in Docker)
+
+Meanwhile...
+Prometheus watches Flask every 15 seconds
+Grafana shows you pretty graphs of what Prometheus collected
 
 ## Services
 | Service    | URL                   | Purpose                  |
