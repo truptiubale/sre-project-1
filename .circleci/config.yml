@@ -11,7 +11,7 @@ jobs:
           command: pip install flask pytest prometheus-flask-exporter
       - run:
           name: Run tests
-          command: pytest tests/ -v
+          command: pytest -v
 
 workflows:
   main:
