@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: pip install flask pytest prometheus-flask-exporter
+          command: pip install flask pytest prometheus-flask-exporter elasticsearch
       - run:
           name: Run tests
           command: pytest -v
