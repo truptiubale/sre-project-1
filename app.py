@@ -46,6 +46,16 @@ def error():
     log_to_es("ERROR", "Error endpoint hit!", "/error")
     return jsonify({"error": "This is a test error"}), 500
 
+# @app.route('/heavy')
+# def heavy():
+#     """This endpoint does heavy work to spike CPU"""
+#     log_to_es("INFO", "Heavy endpoint called", "/heavy")
+#     # Do some CPU intensive work
+#     total = 0
+#     for i in range(1000000):
+#         total += i * i
+#     return jsonify({"result": total, "message": "heavy work done"})
+
 if __name__ == '__main__':
     logger.info("Starting SRE app...")
     app.run(host='0.0.0.0', port=5000)
